@@ -5,7 +5,7 @@
 ( function( App ) {
   var PublishController = Ember.Controller.extend({
     publish: function() {
-      var article = App.get( 'Article' ).create({
+      var article = App.Article.create({
         title: this.get( '_parentView.title' ),
         content: this.get( '_parentView.content' )
       });
@@ -18,5 +18,5 @@
     },
   });
 
-  return App.set( 'PublishController', PublishController );
+  return App.PublishController = PublishController;
 } )( window.EmBlog );

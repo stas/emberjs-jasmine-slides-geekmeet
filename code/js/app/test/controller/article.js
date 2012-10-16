@@ -3,11 +3,11 @@
   describe( 'ArticleController', function() {
 
     it( 'handles article screen', function() {
-      var article = App.get( 'Article' ).create({
+      var article = App.Article.create({
         title: 'Testing title', content: 'Some content...'
       });
-      var controller = App.get( 'ArticleController' ).create();
-      var view = App.get( 'ArticleView' ).create();
+      var controller = App.ArticleController.create();
+      var view = App.ArticleView.create();
 
       controller.set( 'content', article );
       view.set( 'controller', controller );

@@ -4,7 +4,7 @@
 
     it( 'handles article publication', function() {
       var transitionSpy = jasmine.createSpy();
-      var controller = App.get( 'PublishController' ).create({
+      var controller = App.PublishController.create({
         namespace: Ember.Object.create({
           router: Ember.Object.create({
             transitionTo: transitionSpy
@@ -12,8 +12,8 @@
         })
       });
 
-      var view = App.get( 'PublishView' ).create();
-      var count = Object.keys( App.get( 'Article' ).prototype.findAll() ).length;
+      var view = App.PublishView.create();
+      var count = Object.keys( App.Article.prototype.findAll() ).length;
       var newCount;
 
       view.set( 'controller', controller );
@@ -22,7 +22,7 @@
 
       controller.publish.apply( view.get( 'buttonView' ) );
 
-      newCount = Object.keys( App.get( 'Article' ).prototype.findAll() ).length;
+      newCount = Object.keys( App.Article.prototype.findAll() ).length;
       expect( transitionSpy ).toHaveBeenCalled();
 
       expect( newCount ).toEqual( count + 1 );

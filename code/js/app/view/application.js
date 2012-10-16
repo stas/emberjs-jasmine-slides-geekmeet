@@ -7,5 +7,5 @@
     template: Ember.Handlebars.compile( '{{outlet}}' )
   });
 
-  return App.set( 'ApplicationView', AppView );
+  return App.ApplicationView = AppView;
 } )( window.EmBlog );

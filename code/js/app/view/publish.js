@@ -42,5 +42,5 @@
 
   });
 
-  return App.set( 'PublishView', PublishView );
+  return App.PublishView = PublishView;
 } )( window.EmBlog );

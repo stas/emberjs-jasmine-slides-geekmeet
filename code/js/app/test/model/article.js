@@ -3,7 +3,7 @@
   describe( 'Article', function() {
 
     it( 'must have a set of empty attributes', function() {
-      var article = App.get( 'Article' ).create();
+      var article = App.Article.create();
 
       expect( article.get( 'id' ) ).toMatch( /\d+/ );
       expect( article.get( 'title' ) ).toBeNull();
@@ -13,7 +13,7 @@
     });
 
     it( 'creates a valid object with custom values', function() {
-      var article = App.get( 'Article' ).create({
+      var article = App.Article.create({
         title: 'Test Article', content: 'Some content...'
       });
 
@@ -26,11 +26,11 @@
     });
 
     it( 'should find an existing object', function() {
-      var article = App.get( 'Article' ).create({
+      var article = App.Article.create({
         title: 'Test Article', content: 'Some content...'
       });
 
-      var foundArticle = App.get( 'Article' ).prototype.find( article.get( 'id' ) );
+      var foundArticle = App.Article.prototype.find( article.get( 'id' ) );
 
       expect( foundArticle.get( 'slug' ) ).toEqual( article.get( 'slug' ) );
 

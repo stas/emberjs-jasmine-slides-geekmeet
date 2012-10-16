@@ -9,5 +9,5 @@
     )
   });
 
-  return App.set( 'ArticleView', ArticleView );
+  return App.ArticleView = ArticleView;
 } )( window.EmBlog );

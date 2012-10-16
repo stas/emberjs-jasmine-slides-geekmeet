@@ -51,5 +51,5 @@
     })
   });
 
-  return App.set( 'Router', Router );
+  return App.Router = Router;
 })( window.EmBlog );

@@ -52,5 +52,5 @@
     }
   });
 
-  return App.set( 'Article', Article );
+  return App.Article = Article;
 } )( window.EmBlog );
