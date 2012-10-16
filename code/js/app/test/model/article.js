@@ -2,17 +2,27 @@
 ( function( App, $ ){
   describe( 'Article', function() {
 
-    it( 'must have a set of empty attributes', function() {
-      var article = App.Article.create();
+    describe( 'initialization with no values', function() {
+      var article;
 
-      expect( article.get( 'id' ) ).toMatch( /\d+/ );
-      expect( article.get( 'title' ) ).toBeNull();
-      expect( article.get( 'content' ) ).toBeNull();
-      expect( function(){ article.get( 'slug' ) } ).toThrow(
-        new TypeError( 'Cannot call method \'toLowerCase\' of null' ) );
-    });
+      beforeEach( function() {
+        article = App.Article.create();
+      } );
 
-    it( 'creates a valid object with custom values', function() {
+      it( 'has a set of default attributes', function() {
+        expect( article.get( 'id' ) ).toMatch( /\d+/ );
+        expect( article.get( 'title' ) ).toBeNull();
+        expect( article.get( 'content' ) ).toBeNull();
+      });
+
+      it( 'throws an exception when calling slug', function() {
+        expect( function(){ article.get( 'slug' ) } ).toThrow();
+      });
+
+    } );
+
+
+    it( 'is a valid object when initialized with custom values', function() {
       var article = App.Article.create({
         title: 'Test Article', content: 'Some content...'
       });
@@ -25,15 +35,20 @@
       expect( article.get( 'content' ) ).toEqual( 'Some content...' );
     });
 
-    it( 'should find an existing object', function() {
-      var article = App.Article.create({
-        title: 'Test Article', content: 'Some content...'
+    describe( 'class methods', function() {
+
+      it( 'finds an existing object', function() {
+        var article = App.Article.create({
+          title: 'Test Article', content: 'Some content...'
+        });
+
+        var foundArticle = App.Article.prototype.find( article.get( 'id' ) );
+
+        expect( foundArticle.get( 'slug' ) ).toEqual( article.get( 'slug' ) );
+
       });
 
-      var foundArticle = App.Article.prototype.find( article.get( 'id' ) );
+    } );
 
-      expect( foundArticle.get( 'slug' ) ).toEqual( article.get( 'slug' ) );
-
-    });
   });
 })( window.EmBlog, window.jQuery );
