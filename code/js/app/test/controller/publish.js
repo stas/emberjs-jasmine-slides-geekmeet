@@ -1,20 +1,23 @@
 // Tests for publish screen controller class
 ( function( App ){
   describe( 'PublishController', function() {
+    var controller, view;
+
+    beforeEach( function() {
+      view = App.PublishView.create();
+      controller = App.PublishController.create({
+        namespace: Ember.Object.create({
+          router: Ember.Object.create({})
+        })
+      });
+    } );
 
     it( 'handles article publication', function() {
       var transitionSpy = jasmine.createSpy();
-      var controller = App.PublishController.create({
-        namespace: Ember.Object.create({
-          router: Ember.Object.create({
-            transitionTo: transitionSpy
-          })
-        })
-      });
-
-      var view = App.PublishView.create();
       var count = Object.keys( App.Article.prototype.findAll() ).length;
       var newCount;
+
+      controller.set( 'namespace.router.transitionTo', transitionSpy );
 
       view.set( 'controller', controller );
       view.set( 'title', 'A title' );
