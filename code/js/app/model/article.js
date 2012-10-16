@@ -17,6 +17,7 @@
       return slug.replace( /\s+?/g, '-' );
     }.property( 'title' ).cacheable(),
 
+    // Ideally this should be created using `Ember.Object.reopenClass()`
     load: function() {
       return this.set( 'db',
         this.get( 'store' ).data( this.get( 'storeNameSpace' ) )
