@@ -1,0 +1,7 @@
+require 'guard/phantomjs-jasmine/task'
+
+Guard::PhantomJsJasmineTask.new do |t|
+  t.options[:runner] = 'index.html#/test'
+end
+
+task :default => 'phantomjs:jasmine:ci'

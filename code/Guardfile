@@ -1,0 +1,3 @@
+guard 'phantomjs-jasmine', :runner => 'index.html#/test' do
+  watch(%r{js/app/.+\.js})
+end
