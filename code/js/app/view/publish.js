@@ -36,8 +36,8 @@
       type: 'submit',
       value: 'Publish!',
       elementId: 'submit-button',
-      disabledBinding: '_parentView.isEmpty',
-      clickBinding: '_parentView.controller.publish'
+      disabledBinding: 'parentView.isEmpty',
+      clickBinding: 'parentView.controller.publish'
     })
 
   });

@@ -6,12 +6,12 @@
   var PublishController = Ember.Controller.extend({
     publish: function() {
       var article = App.Article.create({
-        title: this.get( '_parentView.title' ),
-        content: this.get( '_parentView.content' )
+        title: this.get( 'parentView.title' ),
+        content: this.get( 'parentView.content' )
       });
 
-      this.set( '_parentView.title', '' );
-      this.set( '_parentView.content', '' );
+      this.set( 'parentView.title', '' );
+      this.set( 'parentView.content', '' );
 
       this.get( 'controller.namespace.router' ).transitionTo(
         'article', article );
