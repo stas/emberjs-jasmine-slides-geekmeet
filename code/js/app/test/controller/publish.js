@@ -3,6 +3,7 @@
   describe( 'PublishController', function() {
 
     it( 'handles article publication', function() {
+      // Test environment initialization in a different function/setUp
       var transitionSpy = jasmine.createSpy();
       var controller = App.PublishController.create({
         namespace: Ember.Object.create({
@@ -11,11 +12,9 @@
           })
         })
       });
-
       var view = App.PublishView.create();
       var count = Object.keys( App.Article.prototype.findAll() ).length;
       var newCount;
-
       view.set( 'controller', controller );
       view.set( 'title', 'A title' );
       view.set( 'content', 'Some content...' );
@@ -24,7 +23,6 @@
 
       newCount = Object.keys( App.Article.prototype.findAll() ).length;
       expect( transitionSpy ).toHaveBeenCalled();
-
       expect( newCount ).toEqual( count + 1 );
     });
 
