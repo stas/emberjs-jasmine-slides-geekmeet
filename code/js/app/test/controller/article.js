@@ -8,18 +8,16 @@
       });
       var controller = App.get( 'ArticleController' ).create();
       var view = App.get( 'ArticleView' ).create();
-      var html;
 
       controller.set( 'content', article );
       view.set( 'controller', controller );
 
       view.createElement();
-      html = view.$().html();
 
-      expect( html ).toMatch( '<h3>' );
-      expect( html ).toMatch( 'Testing title' );
-      expect( html ).toMatch( 'Some content...' );
-      expect( html ).toMatch( '<p>' );
+      expect( view.$().find( 'h3' ).length ).toEqual( 1 );
+      expect( view.$().find( 'h3' ).text() ).toEqual( 'Testing title' );
+      expect( view.$().find( 'p' ).length ).toEqual( 1 );
+      expect( view.$().find( 'p' ).text() ).toEqual( 'Some content...' );
 
     });
 
