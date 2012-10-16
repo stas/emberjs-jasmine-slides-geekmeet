@@ -10,6 +10,8 @@
           router: Ember.Object.create({})
         })
       });
+
+      view.set( 'controller', controller );
     } );
 
     it( 'handles article publication', function() {
@@ -18,8 +20,6 @@
       var newCount;
 
       controller.set( 'namespace.router.transitionTo', transitionSpy );
-
-      view.set( 'controller', controller );
       view.set( 'title', 'A title' );
       view.set( 'content', 'Some content...' );
 
