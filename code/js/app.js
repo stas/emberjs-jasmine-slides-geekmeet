@@ -2,7 +2,7 @@
  * Application Loader
  * @return Class
  */
-( function( w, $ ) {
+( function( w ) {
   var App = Ember.Application.create({
     VERSION: '0.1',
     rootElement: '#content',
@@ -11,4 +11,4 @@
   });
 
   return w.EmBlog = App;
-} )( window, jQuery );
+} )( window );

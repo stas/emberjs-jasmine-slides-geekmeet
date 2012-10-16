@@ -1,5 +1,5 @@
 // Tests for Article class
-( function( App ){
+( function( App, $ ){
   describe( 'Article', function() {
 
     it( 'must have a set of empty attributes', function() {
@@ -36,4 +36,4 @@
 
     });
   });
-})( window.EmBlog );
+})( window.EmBlog, window.jQuery );
