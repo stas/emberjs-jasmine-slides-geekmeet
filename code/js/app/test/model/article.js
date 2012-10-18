@@ -42,7 +42,7 @@
           title: 'Test Article', content: 'Some content...'
         });
 
-        var foundArticle = App.Article.prototype.find( article.get( 'id' ) );
+        var foundArticle = App.Article.find( article.get( 'id' ) );
 
         expect( foundArticle.get( 'slug' ) ).toEqual( article.get( 'slug' ) );
 

@@ -16,7 +16,7 @@
 
     it( 'handles article publication', function() {
       var transitionSpy = jasmine.createSpy();
-      var count = Object.keys( App.Article.prototype.findAll() ).length;
+      var count = Object.keys( App.Article.all() ).length;
       var newCount;
 
       controller.set( 'namespace.router.transitionTo', transitionSpy );
@@ -25,7 +25,7 @@
 
       controller.publish.apply( view.get( 'buttonView' ) );
 
-      newCount = Object.keys( App.Article.prototype.findAll() ).length;
+      newCount = Object.keys( App.Article.all() ).length;
       expect( transitionSpy ).toHaveBeenCalled();
 
       expect( newCount ).toEqual( count + 1 );

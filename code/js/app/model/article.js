@@ -7,9 +7,6 @@
     id: null,
     title: null,
     content: null,
-    storeNameSpace: 'articles',
-    store: $( App.get( 'rootElement' ) ),
-    db: {},
 
     // Handle Generation of the slug as a property
     slug: function() {
@@ -17,40 +14,30 @@
       return slug.replace( /\s+?/g, '-' );
     }.property( 'title' ).cacheable(),
 
-    // Ideally this should be created using `Ember.Object.reopenClass()`
-    load: function() {
-      return this.set( 'db',
-        this.get( 'store' ).data( this.get( 'storeNameSpace' ) )
-      );
-    },
-
-    save: function() {
-      this.get( 'store' ).data(
-        this.get( 'storeNameSpace' ),
-        this.get( 'db' )
-      );
-    },
-
-    find: function( id ) {
-      return this.get( 'db' )[ id ];
-    },
-
-    findAll: function() {
-      return this.get( 'db' );
-    },
-
     // Constructor
     init: function() {
-      var db = this.get( 'db' ),
-        id = Date.now();
+      var id = Date.now();
 
       this._super();
 
       this.set( 'id', id );
-      db[ id ] = this;
+      Article.db[ id ] = this;
 
       return this;
     }
+  });
+
+  Article.reopenClass({
+    db: {},
+
+    find: function( id ) {
+      return this.db[ id ];
+    },
+
+    all: function() {
+      return this.db;
+    }
+
   });
 
   return App.Article = Article;
