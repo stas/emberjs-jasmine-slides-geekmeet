@@ -1,0 +1,496 @@
+\documentclass[compress]{beamer}
+
+\beamertemplatetransparentcovered
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.3333\paperwidth,left]{}%
+      \insertshortinstitute
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.3333\paperwidth,center]{}%
+      \insertframenumber{} / \inserttotalframenumber
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[wd=.3333\paperwidth,right]{}%
+      \insertshortdate{}
+      \;
+    \end{beamercolorbox}
+  }%
+}
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+\usetheme[dark,accent=violet]{solarized}
+
+\usepackage{fontspec}
+\setmainfont[Mapping=tex-text]{Source Sans Pro}
+\setmonofont[Mapping=tex-text]{Inconsolata}
+
+\graphicspath{{./images/}}
+
+\title{Ember.js și Jasmine BDD.}
+\subtitle{În contextul proiectului TodoMVC.}
+
+\author{Stas Sușcov (\href{mailto:stas@nerd.ro}{stas@nerd.ro})}
+\date{Octomber 20th, 2012}
+
+\institute{GeekMeet \#12, Cluj-Napoca, Transilvania}
+
+\begin{document}
+
+% ----------------------------------------------------------------------------
+% *** Titlepage <<<
+% ----------------------------------------------------------------------------
+\maketitle
+% ----------------------------------------------------------------------------
+% *** END of Titlepage >>>
+% ----------------------------------------------------------------------------
+
+
+\section{Despre}
+
+\subsection{Despre autor}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Despre mine}
+
+\begin{itemize}[<+->]
+  \item un \href{http://stas.nerd.ro}{nerd}
+  \item dezvoltator pretențios și pedant
+  \item interese: web/operations
+  \item nu fac frontend sau design
+  \item (\Heart (papa vin bicicleta))
+\end{itemize}
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+  \begin{center}
+  \huge Astăzi când zic JavaScript, nu mă refer la Node.js, CoffeeScript sau LiveScript!
+  \end{center}
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\subsection{Despre problemă}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Povestea mea}
+
+\hypertarget{why}{}
+
+\begin{itemize}[<+->]
+  \item căutam o soluție pentru frontend pentru non-frontend-iști
+  \item sa știe MVC
+  \item sa fie populară insa nu pre recentă
+  \item sa știe chestii \textbf{fancy} gen:
+    \begin{itemize}[<+->]
+      \item binding-uri
+      \item observere
+      \item rutare
+      \item sa nu necesite HTML/nu fie foarte declarativ
+      \item sa nu fie \em împrăștiat
+    \end{itemize}
+\end{itemize}
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\subsection{Despre resurse}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{Treaba cu TodoMVC}
+
+\begin{itemize}[<+->]
+  \item are ca scop să prezinte cât mai multe librării (framework) JavaScript
+    \begin{itemize}[<+->]
+      \item în mare măsură MV*
+    \end{itemize}
+  \item urmează strict un set de specificații
+  \item se propune să oferă și teste (însă se lucrează aici)
+  \item are nișe persoane interesante la colaboratori
+    \begin{itemize}[<+->]
+      \item \href{https://twitter.com/addyosmani}{Addy Osmani}
+      \item \href{https://twitter.com/sindresorhus}{Sindre Sorhus}
+    \end{itemize}
+  \item colaborează cu autorii/dezvoltatorii de bază din comunitățile populare
+  \item este un proiect educațional extraordinar
+\end{itemize}
+
+\begin{flushright}
+  \colorbox{white}{\includegraphics[height=0.5cm]{todomvc.png}}
+  \\
+  \tiny \url{http://todomvc.com}
+\end{flushright}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\subsection{Ember.js}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{Am ales Ember.js}
+
+\begin{itemize}[<+->]
+  \item pentru că \hyperlink{why}{vezi mai sus \MoveUp}
+  \item pentru că are convenții (cough-cough rails)
+  \item pentru că e doar o librărie, nu zece!
+  \item pentru că e fun și mai jos voi încerca să demonstrez acest lucru
+\end{itemize}
+
+\begin{flushright}
+  \includegraphics[width=2cm]{emberjs.png}
+  \\
+  \tiny \url{http://emberjs.com}
+\end{flushright}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\section{Cod}
+\subsection{Scop}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{Demo Ember.js (tentativă de blog)}
+
+\begin{itemize}[<+->]
+  \item am scris o aplicație simplă pentru a trezi interesul vostru
+  \item unde următorul pas ar fi să vă jucați cu codul din prezentare
+  \item și să-i dați o șansă proiectului Ember.js din suita TodoMVC
+  \begin{itemize}[<+->]
+    \item este loc de niște contribuții cum ar fi
+    \begin{itemize}[<+->]
+      \item mai multe teste
+      \item actualizat cu modificările de API
+      \item rescris Todo.js (modelul)
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\subsection{app.js}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{app.js}
+
+\begin{itemize}[<+->]
+  \item are ca scop instanțierea aplicației
+  \item \texttt{ApplicationController} și \texttt{ApplicationView} sunt musai!
+  \item \texttt{rootElement} e pentru a specifica unde să-și facă de cap aplicația
+  \item la \texttt{\{\{yeild\}\}} se leagă \texttt{connectOutlets}
+\end{itemize}
+
+\inputminted[fontsize=\tiny,gobble=2,linenos=true,firstline=6,lastline=16]{javascript}{code/js/app.js}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\subsection{app/router.js}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{app/router.js}
+
+\begin{itemize}[<+->]
+  \item ruta \texttt{root} e musai și de acolo va porni aplicația implicit
+  \item \texttt{enter} se apelează când ruta este accesată
+  \item \texttt{connectOutlets} se apelează când ruta e accesată pentru a conecta controllere specifice
+\end{itemize}
+
+
+\inputminted[fontsize=\tiny,gobble=2,linenos=true,firstline=6,lastline=29]{javascript}{code/js/app/router.js}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\subsection{app/model/article.js}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{app/model/article.js}
+
+\begin{itemize}[<+->]
+  \item este modelul aplicației (clasă \texttt{ActiveRecord} dacă doriți)
+  \item \texttt{.property()} sunt definește proprietăți computate (atribute dinamice)
+  \begin{itemize}[<+->]
+    \item este valabil pentru oricare componentă din Ember.js
+  \end{itemize}
+  \item \texttt{init} este constructorul (\texttt{new, initialize, \_\_construct()})
+  \item metodele clasei
+  \begin{itemize}[<+->]
+    \item \texttt{find} face parte din convenție și este apelat de rută dacă e cazul
+    \item \texttt{all} este la fel parte din convenție, apelat la fel de rută dacă e cazul
+  \end{itemize}
+\end{itemize}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\inputminted[fontsize=\tiny,gobble=2,linenos=true,firstline=6,lastline=20]{javascript}{code/js/app/model/article.js}
+\end{column}
+\begin{column}{0.5\textwidth}
+\inputminted[fontsize=\tiny,gobble=2,linenos=true,firstline=30,lastline=41,firstnumber=24]{javascript}{code/js/app/model/article.js}
+\end{column}
+\end{columns}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\subsection{app/controller/publish.js}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{app/controller/publish.js}
+
+\begin{itemize}[<+->]
+  \item controllerele sunt simple, modelele ar trebui să fie baza
+  \item controllerele conțin logica din view-uri, știu de modele și de rute
+\end{itemize}
+
+\inputminted[fontsize=\tiny,gobble=2,linenos=true,firstline=6,lastline=19]{javascript}{code/js/app/controller/publish.js}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\subsection{app/view/publish.js}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{app/view/publish.js}
+
+\begin{itemize}[<+->]
+  \item poate conține mai multe șabloane/view-uri care pot fi diferite
+  \begin{itemize}[<+->]
+    \item vezi \texttt{childViews}, \texttt{Ember.TextField}, \texttt{Ember.TextArea}, \texttt{Ember.ContainerView}, etc.
+  \end{itemize}
+  \item orice atribut care se termină în \texttt{Binding}, reprezintă o referință la calea specificată
+  \begin{itemize}[<+->]
+    \item este valabil pentru oricare componentă din Ember.js
+  \end{itemize}
+  \item ideal, șabloanele generează HTML-ul
+  \item șabloanele știu de evenimente, exemplu: \texttt{click}, \texttt{insertNewline}, etc.
+\end{itemize}
+
+\inputminted[fontsize=\tiny,gobble=2,linenos=true,firstline=6,lastline=21]{javascript}{code/js/app/view/publish.js}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\subsection{app/view/article.js}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{app/view/article.js}
+
+\begin{itemize}[<+->]
+  \item este un șablon care folosește un cod HTML predefinit (\texttt{template})
+  \item orice șablon poate folosi cod cu sintaxa Handlebars.js
+  \item poate avea și un \texttt{layout}
+  \item poate folosi helpere, exemplu: \texttt{action}, \texttt{log}, \texttt{bindAttr}, etc.
+\end{itemize}
+
+\inputminted[fontsize=\tiny,gobble=2,linenos=true,firstline=6,lastline=10]{javascript}{code/js/app/view/article.js}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\section{Despre testare}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+  \begin{center}
+  \huge A scrie teste pe JavaScript e mai simplu decât în orice alt limbaj de programare (discutabil Ruby), deci nu ai scuze pentru a nu scrie teste!
+  \end{center}
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{Testarea aplicației}
+
+\begin{itemize}[<+->]
+  \item prefer Jasmine BDD pentru că \ldots este doar o librărie, nu zece!
+  \begin{itemize}[<+->]
+    \item pentru \em{cowboys}, vezi alte \href{https://github.com/rwldrn/idiomatic.js/\#test-facility}{opțiuni}
+  \end{itemize}
+  \item tot timpul folosiți unelte pentru a câștiga timp, in cazul nostru, Phantom.js
+  \begin{itemize}[<+->]
+    \item testele de browser pot fi rulate pragmatic pentru a câștiga timp
+    \item pentru a întreține proiectul sănătos, folosiți un serviciu de CI (integrare continouă)
+    \item exemplu: \texttt{guard-phantomjs-jasmine}
+  \end{itemize}
+\end{itemize}
+
+\begin{flushright}
+  \colorbox{white}{\includegraphics[height=1.1cm]{jasmine.png}}
+  \\
+  \tiny \url{http://pivotal.github.com/jasmine/}
+\end{flushright}
+
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{Unit teste pentru modele}
+
+\begin{itemize}[<+->]
+  \item \texttt{describe} pentru a specifica ce testezi
+  \item \texttt{it} pentru a descrie testul
+  \item \texttt{beforeEach} pentru a nu te repeta
+  \item folosește mai multe \texttt{describe}-uri pentru a specifica schimbările de context
+  \begin{itemize}[<+->]
+    \item exemplu, testezi metodele clasei și nu a instanței
+  \end{itemize}
+\end{itemize}
+
+\inputminted[fontsize=\tiny,gobble=2,linenos=true,firstline=3,lastline=23]{javascript}{code/js/app/test/model/article.js}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+
+\frametitle{Teste de integrare pentru controllere}
+
+\begin{itemize}[<+->]
+  \item folosește \texttt{spy}-uri (șpioni) sau altfel numiți \texttt{stub}, \texttt{mocks} pentru a izola testele
+  \item dacă Jasmine nu are suport pentru eșteptările (expectations) unui test, rescrie testul
+\end{itemize}
+
+\inputminted[fontsize=\tiny,gobble=2,linenos=true,firstline=6,lastline=29]{javascript}{code/js/app/test/controller/publish.js}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\section{Încheiere}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+  \begin{center}
+  \huge Întrebări?!
+  \\
+  Mulțumim pentru atenție!
+  \end{center}
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\subsection{Contacte și Legături}
+
+% ----------------------------------------------------------------------------
+% *** Frame <<<
+% ----------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Legături utile}
+
+\begin{itemize}
+  \item TodoMVC -- \url{https://github.com/addyosmani/todomvc/}
+  \item Ember.js -- \url{http://emberjs.com/}
+  \item Jasmine BDD -- \url{http://pivotal.github.com/jasmine/}
+  \item Idiomatic.js -- \url{https://github.com/rwldrn/idiomatic.js/}
+  \item Phantom.js -- \url{http://phantomjs.org/}
+  \item guard-phantomjs-jasmine -- \url{https://github.com/stas/guard-phantomjs-jasmine}
+  \item \url{https://github.com/stas/emberjs-jasmine-slides}
+\end{itemize}
+
+\end{frame}
+% ----------------------------------------------------------------------------
+% *** END of Frame >>>
+% ----------------------------------------------------------------------------
+
+\end{document}
