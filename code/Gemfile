@@ -1,4 +1,4 @@
 source :rubygems
 
-gem 'guard-phantomjs-jasmine', :path => '~/Documente/git/guard-phantomjs-jasmine'
+gem 'guard-phantomjs-jasmine', :github => 'stas/guard-phantomjs-jasmine'
 gem 'rb-inotify'
